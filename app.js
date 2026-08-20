@@ -1,27 +1,17 @@
-﻿require('dotenv').config();
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const API_SECRET = process.env.API_SECRET || 'your-secret-key';
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 
-// Auth middleware — check for x-api-key header
-const validateAuth = (req, res, next) => {
-  const apiKey = req.headers['x-api-key'];
-  if (apiKey !== API_SECRET) {
-    return res.status(401).json({ error: 'Unauthorized' });
-  }
-  next();
-};
-
 // MCP Server — tools endpoint
-app.post('/mcp', validateAuth, async (req, res) => {
+app.post('/mcp', async (req, res) => {
   const { tool, input } = req.body;
 
   try {
